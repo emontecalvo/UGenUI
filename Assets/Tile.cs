@@ -16,12 +16,17 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
 	Vector3 rotationEuler;
 
+	Vector3 rotationEulerCW;
+
 	public Color TargetColor;
 	public Color CurrentColor;
 
 	public Image BackgroundImg;
 
 	bool IsSpinning = false;
+
+	public bool IsClockwise;
+
 
 	float ActiveScale = Mathf.Sqrt (2.0f) / 2.0f;
 
@@ -45,7 +50,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	{
 		TargetColor = ActiveColor;
 
-		Debug.Log("mouse entering");
+//		Debug.Log("mouse entering");
 	}
 
 	// Use this for initialization
@@ -65,15 +70,36 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 			CurrentScale -= 0.1f * Time.deltaTime;
 		}
 
-		if (IsSpinning) {
-			rotationEuler+= Vector3.forward*30*Time.deltaTime; //increment 30 degrees every second
-			PanelRT.rotation = Quaternion.Euler(rotationEuler);
+		if (IsSpinning && IsClockwise) {
+			rotationEuler += Vector3.back * 30 * Time.deltaTime; //increment 30 degrees every second
+			PanelRT.rotation = Quaternion.Euler (rotationEuler);
+		} else if (IsSpinning) {
+			rotationEuler += Vector3.forward * 30 * Time.deltaTime;
+			PanelRT.rotation = Quaternion.Euler (rotationEuler);
 		}
 
 		if (CurrentColor.r < TargetColor.r) {
 			CurrentColor.r += 0.1f * Time.deltaTime;
 		} else if (CurrentColor.r > TargetColor.r) {
 			CurrentColor.r -= 0.1f * Time.deltaTime;
+		}
+
+		if (CurrentColor.g < TargetColor.g) {
+			CurrentColor.g += 0.1f * Time.deltaTime;
+		} else if (CurrentColor.g > TargetColor.g) {
+			CurrentColor.g -= 0.1f * Time.deltaTime;
+		}
+
+		if (CurrentColor.b < TargetColor.b) {
+			CurrentColor.b += 0.1f * Time.deltaTime;
+		} else if (CurrentColor.b > TargetColor.b) {
+			CurrentColor.b -= 0.1f * Time.deltaTime;
+		}
+
+		if (CurrentColor.a < TargetColor.a) {
+			CurrentColor.a += 0.1f * Time.deltaTime;
+		} else if (CurrentColor.a > TargetColor.a) {
+			CurrentColor.a -= 0.1f * Time.deltaTime;
 		}
 
 		BackgroundImg.color = CurrentColor;

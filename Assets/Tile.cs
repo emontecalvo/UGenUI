@@ -14,47 +14,71 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	public float TargetScale = 1f;
 	public float CurrentScale = 1f;
 
+	Vector3 rotationEuler;
 
-	public void OnPointerClick (PointerEventData eventData)
-	{
-//		PanelRT.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-		TargetScale = 0.8f;
-	}
-		
-
-
-
-	public void OnPointerExit (PointerEventData eventData)
-	{
-		BackgroundImg.color = IdleColor;
-	}
-
+	public Color TargetColor;
+	public Color CurrentColor;
 
 	public Image BackgroundImg;
 
-	public void OnPointerEnter (PointerEventData eventData)
-	{
+	bool IsSpinning = false;
 
-		BackgroundImg.color = ActiveColor;
-		Debug.Log("mouse entering");
+	float ActiveScale = Mathf.Sqrt (2.0f) / 2.0f;
+
+	public void OnPointerClick (PointerEventData eventData)
+	{
+		TargetScale = ActiveScale;
+
+		if (!IsSpinning) {
+			IsSpinning = true;
+		} else {
+			IsSpinning = false;
+		}
 	}
 
+	public void OnPointerExit (PointerEventData eventData)
+	{
+		TargetColor = IdleColor;
+	}
 
+	public void OnPointerEnter (PointerEventData eventData)
+	{
+		TargetColor = ActiveColor;
 
-
-
+		Debug.Log("mouse entering");
+	}
 
 	// Use this for initialization
 	void Start () {
 		BackgroundImg = GetComponent<Image> ();
 		PanelRT = GetComponent<RectTransform> ();
+
+		TargetColor = IdleColor;
+		CurrentColor = IdleColor;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		PanelRT.localScale = new Vector3(CurrentScale, CurrentScale, CurrentScale);
+
 		if (CurrentScale > TargetScale) {
 			CurrentScale -= 0.1f * Time.deltaTime;
 		}
+
+		if (IsSpinning) {
+			rotationEuler+= Vector3.forward*30*Time.deltaTime; //increment 30 degrees every second
+			PanelRT.rotation = Quaternion.Euler(rotationEuler);
+		}
+
+		if (CurrentColor.r < TargetColor.r) {
+			CurrentColor.r += 0.1f * Time.deltaTime;
+		} else if (CurrentColor.r > TargetColor.r) {
+			CurrentColor.r -= 0.1f * Time.deltaTime;
+		}
+
+		BackgroundImg.color = CurrentColor;
 	}
 }
+
+
+

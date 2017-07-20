@@ -76,27 +76,27 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 		}
 
 		if (CurrentColor.r < TargetColor.r) {
-			CurrentColor.r += 0.1f * Time.deltaTime;
+			CurrentColor.r += 0.5f * Time.deltaTime;
 		} else if (CurrentColor.r > TargetColor.r) {
-			CurrentColor.r -= 0.1f * Time.deltaTime;
+			CurrentColor.r -= 0.5f * Time.deltaTime;
 		}
 
 		if (CurrentColor.g < TargetColor.g) {
-			CurrentColor.g += 0.1f * Time.deltaTime;
+			CurrentColor.g += 0.5f * Time.deltaTime;
 		} else if (CurrentColor.g > TargetColor.g) {
-			CurrentColor.g -= 0.1f * Time.deltaTime;
+			CurrentColor.g -= 0.5f * Time.deltaTime;
 		}
 
 		if (CurrentColor.b < TargetColor.b) {
-			CurrentColor.b += 0.1f * Time.deltaTime;
+			CurrentColor.b += 0.5f * Time.deltaTime;
 		} else if (CurrentColor.b > TargetColor.b) {
-			CurrentColor.b -= 0.1f * Time.deltaTime;
+			CurrentColor.b -= 0.5f * Time.deltaTime;
 		}
 
 		if (CurrentColor.a < TargetColor.a) {
-			CurrentColor.a += 0.1f * Time.deltaTime;
+			CurrentColor.a += 0.5f * Time.deltaTime;
 		} else if (CurrentColor.a > TargetColor.a) {
-			CurrentColor.a -= 0.1f * Time.deltaTime;
+			CurrentColor.a -= 0.5f * Time.deltaTime;
 		}
 
 		BackgroundImg.color = CurrentColor;

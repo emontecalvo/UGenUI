@@ -27,8 +27,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
 	float ActiveScale = Mathf.Sqrt (2.0f) / 2.0f; // ensure panels don't touch when spinning if currently touching
 
-
-
 	public void OnPointerClick (PointerEventData eventData)
 	{
 		TargetScale = ActiveScale;
@@ -37,6 +35,7 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 			IsSpinning = true;
 		} else {
 			IsSpinning = false;
+			TargetScale = 1f;
 		}
 	}
 
@@ -50,7 +49,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 		TargetColor = ActiveColor;
 	}
 
-	// Use this for initialization
 	void Start () {
 		BackgroundImg = GetComponent<Image> ();
 		PanelRT = GetComponent<RectTransform> ();
@@ -58,20 +56,21 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 		TargetColor = IdleColor;
 		CurrentColor = IdleColor;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		PanelRT.localScale = new Vector3(CurrentScale, CurrentScale, CurrentScale);
 
 		if (CurrentScale > TargetScale) {
 			CurrentScale -= 0.1f * Time.deltaTime;
+		} else if (CurrentScale < TargetScale) {
+			CurrentScale += 0.1f * Time.deltaTime;
 		}
 
 		if (IsSpinning && IsClockwise) {
-			rotationEuler += Vector3.back * 30 * Time.deltaTime; //increment 30 degrees every second
+			rotationEuler += new Vector3(0,0, -30 * Time.deltaTime);
 			PanelRT.rotation = Quaternion.Euler (rotationEuler);
 		} else if (IsSpinning) {
-			rotationEuler += Vector3.forward * 30 * Time.deltaTime;
+			rotationEuler += new Vector3(0,0, 30 * Time.deltaTime);
 			PanelRT.rotation = Quaternion.Euler (rotationEuler);
 		}
 

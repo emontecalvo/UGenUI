@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
 	public Color ActiveColor;
 	public Color IdleColor;
+	public Color TargetColor;
+	public Color CurrentColor;
 
 	public RectTransform PanelRT;
 
@@ -15,20 +17,17 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	public float CurrentScale = 1f;
 
 	Vector3 rotationEuler;
-
 	Vector3 rotationEulerCW;
-
-	public Color TargetColor;
-	public Color CurrentColor;
 
 	public Image BackgroundImg;
 
-	bool IsSpinning = false;
 
+	bool IsSpinning = false;
 	public bool IsClockwise;
 
+	float ActiveScale = Mathf.Sqrt (2.0f) / 2.0f; // ensure panels don't touch when spinning if currently touching
 
-	float ActiveScale = Mathf.Sqrt (2.0f) / 2.0f;
+
 
 	public void OnPointerClick (PointerEventData eventData)
 	{
@@ -49,8 +48,6 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	public void OnPointerEnter (PointerEventData eventData)
 	{
 		TargetColor = ActiveColor;
-
-//		Debug.Log("mouse entering");
 	}
 
 	// Use this for initialization

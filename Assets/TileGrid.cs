@@ -12,6 +12,13 @@ public class TileGrid : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+		if (NumberOfRows < 1) {
+			NumberOfRows = 0;
+		} else if (NumberOfColumns < 1) {
+			NumberOfColumns = 1;
+		}
+
 		float colWidth = 1f / (float)NumberOfColumns;
 		float rowHeight = 1f / (float)NumberOfRows;
 		float xMinCounter = 0f;

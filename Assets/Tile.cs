@@ -60,18 +60,20 @@ public class Tile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 	void Update () {
 		PanelRT.localScale = new Vector3(CurrentScale, CurrentScale, CurrentScale);
 
-		if (CurrentScale > TargetScale) {
-			CurrentScale -= 0.1f * Time.deltaTime;
-		} else if (CurrentScale < TargetScale) {
-			CurrentScale += 0.1f * Time.deltaTime;
-		}
+		bool isScaling = false;
 
-		if (IsSpinning && IsClockwise) {
-			rotationEuler += new Vector3(0,0, -30 * Time.deltaTime);
-			PanelRT.rotation = Quaternion.Euler (rotationEuler);
-		} else if (IsSpinning) {
-			rotationEuler += new Vector3(0,0, 30 * Time.deltaTime);
-			PanelRT.rotation = Quaternion.Euler (rotationEuler);
+		CurrentScale = Mathf.MoveTowards (CurrentScale, TargetScale, 0.1f * Time.deltaTime);
+
+		isScaling = (CurrentScale != TargetScale);
+
+		if (!isScaling) {
+			if (IsSpinning && IsClockwise) {
+				rotationEuler += new Vector3(0,0, -30 * Time.deltaTime);
+				PanelRT.rotation = Quaternion.Euler (rotationEuler);
+			} else if (IsSpinning) {
+				rotationEuler += new Vector3(0,0, 30 * Time.deltaTime);
+				PanelRT.rotation = Quaternion.Euler (rotationEuler);
+			}
 		}
 
 		if (CurrentColor.r < TargetColor.r) {

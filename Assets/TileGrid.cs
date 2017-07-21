@@ -8,19 +8,47 @@ public class TileGrid : MonoBehaviour {
 
 	public int NumberOfTiles;
 	public int NumberOfRows;
+	public int NumberOfColumns;
 
 	// Use this for initialization
 	void Start () {
+		float colWidth = 1f / (float)NumberOfColumns;
+		float rowHeight = 1f / (float)NumberOfRows;
 		float xMinCounter = 0f;
-		float xMaxCounter = 0.25f;
+		float xMaxCounter = colWidth;
+		float yMinCounter = 1 - rowHeight;
+		float yMaxCounter = 1f;
+		int colCounter = 0;
 		for (int i = 0; i < NumberOfTiles; i++) {
 			GameObject go = (GameObject)Instantiate (TilePrefab);
-			go.transform.SetParent(transform, false);
+			go.transform.SetParent (transform, false);
+			Tile tile = go.GetComponent<Tile> ();
+			if (i % 2 == 0) {
+				tile.IsClockwise = true;
+			} else {
+				tile.IsClockwise = false;
+			}
+			//
+			// placement
+			//
 			RectTransform rt = go.GetComponent<RectTransform> ();
-			rt.anchorMin = new Vector2 (xMinCounter, 0.7f);
-			rt.anchorMax = new Vector2 (xMaxCounter, 1f);
-			xMinCounter += 0.25f;
-			xMaxCounter += 0.25f;
+			rt.anchorMin = new Vector2 (xMinCounter, yMinCounter);
+			rt.anchorMax = new Vector2 (xMaxCounter, yMaxCounter);
+			xMinCounter += colWidth;
+			xMaxCounter += colWidth;
+			colCounter += 1;
+
+			//
+			// next row
+			//
+			if (colCounter >= NumberOfColumns) {
+				xMinCounter = 0f;
+				xMaxCounter = colWidth;
+				yMinCounter -= rowHeight;
+				yMaxCounter -= rowHeight;
+				colCounter = 0;
+			}
+
 		}
 	}
 	
